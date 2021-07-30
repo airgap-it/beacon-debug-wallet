@@ -57,9 +57,24 @@
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js';  // Included with Angular CLI.
-
+import 'zone.js'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+(window as any).global = window;
+(window as any).process = {
+  env: {
+    NODE_DEBUG: false,
+  },
+};
+// @ts-ignore
+window.Buffer = window.Buffer || require('buffer').Buffer;
+
+var polyfill = require('core-assert');
+var assert = require('assert');
+
+if (assert.notStrictEqual === undefined) {
+  assert.notStrictEqual = polyfill.notStrictEqual;
+}
