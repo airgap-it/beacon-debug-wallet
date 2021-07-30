@@ -28,7 +28,7 @@ jobs:
       #   run: npm run actions:prettier
 
       - name: Build
-        run: npm run build -- --prod
+        run: npm run build -- --optimization=false
 
       - name: Upload
         uses: actions/upload-artifact@v1
