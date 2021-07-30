@@ -2,6 +2,8 @@
   "name": "beacon-debug-wallet",
   "version": "0.0.0",
   "scripts": {
+    "actions:deploy": "ng deploy --name $GITHUB_ACTOR --email $GITHUB_ACTOR@users.noreply.github.com --no-silent",
+    "actions:prettier": "prettier \"src/**/*.ts\" \"e2e/**/*.ts\" \"angular.json\" \"README.md\" --list-different",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -43,6 +45,7 @@
     "@types/bs58check": "^2.1.0",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
+    "angular-cli-ghpages": "*",
     "jasmine-core": "~3.8.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
