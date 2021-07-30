@@ -22,7 +22,10 @@
       "stream": ["./node_modules/stream-browserify"],
       "crypto": ["./node_modules/crypto-browserify"],
       "assert": ["./node_modules/assert-polyfill"],
-      "util": ["./node_modules/util"]
+      "util": ["./node_modules/util"],
+      "http": ["./node_modules/stream-http"],
+      "https": ["./node_modules/https-browserify"],
+      "os": ["./node_modules/os-browserify/browser"]
       // "process": ["./node_modules/process"]
     }
   },

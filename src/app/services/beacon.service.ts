@@ -1,13 +1,18 @@
 import {
   BeaconErrorType,
   BeaconMessageType,
+  PartialTezosOperation,
+  PartialTezosTransactionOperation,
   PermissionScope,
   Serializer,
   WalletClient,
 } from '@airgap/beacon-sdk';
-// import { TezosProtocol } from '@airgap/coinlib-core';
 import { Injectable } from '@angular/core';
 // import * as bs58check from 'bs58check';
+
+import { RpcClient, OperationContents, OpKind } from '@taquito/rpc';
+
+const client = new RpcClient('https://mainnet-tezos.giganode.io');
 
 @Injectable({
   providedIn: 'root',
@@ -84,37 +89,37 @@ export class BeaconService {
       });
   }
 
-  public async runOperations(operations: any) {
-    // const tezosProtocol = new TezosProtocol();
-    // let publicKey = localStorage.getItem('pubkey');
-    // if (publicKey.startsWith('edpk') && publicKey.length === 54) {
-    //   const edpkPrefixLength = 4;
-    //   const decoded = bs58check.decode(publicKey);
-    //   publicKey = decoded
-    //     .slice(edpkPrefixLength, decoded.length)
-    //     .toString('hex');
-    // }
-    // if (!publicKey) {
-    //   console.error('NO PUBLIC KEY');
-    //   return;
-    // }
-    // tezosProtocol
-    //   .prepareOperations(publicKey, operations)
-    //   .then(async (wrappedOperations) => {
-    //     console.log('DONE');
-    //     const signedTx = await tezosProtocol.forgeAndWrapOperations(
-    //       wrappedOperations
-    //     );
-    //     tezosProtocol
-    //       .getTransactionDetails({ publicKey, transaction: signedTx })
-    //       .then((tx) => {
-    //         console.log(tx);
-    //       })
-    //       .catch((error) => console.error('error1', error));
-    //   })
-    //   .catch((error) => {
-    //     console.error('error2');
-    //     console.error(JSON.stringify(error.data));
-    //   });
+  public async runOperations(operations: PartialTezosOperation[]) {
+    const address = localStorage.getItem('address');
+
+    const { counter } = await client.getContract(address);
+    const nextCounter = parseInt(counter || '0', 10) + 1;
+    const branch = (await client.getBlockHeader()).hash;
+    // RPC requires a signature but does not verify it
+    const SIGNATURE_STUB =
+      'edsigtkpiSSschcaCt9pUVrpNPf7TTcgvgDEDD6NCEHMy8NNQJCGnMfLZzYoQj74yLjo9wx6MPVV29CvVzgi7qEcEUok3k7AuMg';
+    const chainId = await client.getChainId();
+
+    const typedOperations: OperationContents[] = operations.map((op) => ({
+      source: address,
+      counter: String(nextCounter),
+      fee: '10000',
+      gas_limit: '1040000',
+      storage_limit: '60000',
+      ...(op as PartialTezosTransactionOperation),
+      kind: OpKind.TRANSACTION,
+    }));
+
+    client
+      .runOperation({
+        operation: {
+          branch,
+          contents: typedOperations,
+          signature: SIGNATURE_STUB,
+        },
+        chain_id: chainId,
+      })
+      .then((res) => console.log('RUN_OPERATION RESULT', res))
+      .catch((err) => console.log('RUN_OPERATION ERROR', err));
   }
 }
