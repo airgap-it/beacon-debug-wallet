@@ -5,9 +5,9 @@ import {
   Serializer,
   WalletClient,
 } from '@airgap/beacon-sdk';
-import { TezosProtocol } from '@airgap/coinlib-core';
+// import { TezosProtocol } from '@airgap/coinlib-core';
 import { Injectable } from '@angular/core';
-import * as bs58check from 'bs58check';
+// import * as bs58check from 'bs58check';
 
 @Injectable({
   providedIn: 'root',
@@ -85,41 +85,36 @@ export class BeaconService {
   }
 
   public async runOperations(operations: any) {
-    const tezosProtocol = new TezosProtocol();
-
-    let publicKey = localStorage.getItem('pubkey');
-
-    if (publicKey.startsWith('edpk') && publicKey.length === 54) {
-      const edpkPrefixLength = 4;
-      const decoded = bs58check.decode(publicKey);
-
-      publicKey = decoded
-        .slice(edpkPrefixLength, decoded.length)
-        .toString('hex');
-    }
-
-    if (!publicKey) {
-      console.error('NO PUBLIC KEY');
-      return;
-    }
-
-    tezosProtocol
-      .prepareOperations(publicKey, operations)
-      .then(async (wrappedOperations) => {
-        console.log('DONE');
-        const signedTx = await tezosProtocol.forgeAndWrapOperations(
-          wrappedOperations
-        );
-        tezosProtocol
-          .getTransactionDetails({ publicKey, transaction: signedTx })
-          .then((tx) => {
-            console.log(tx);
-          })
-          .catch((error) => console.error('error1', error));
-      })
-      .catch((error) => {
-        console.error('error2');
-        console.error(JSON.stringify(error.data));
-      });
+    // const tezosProtocol = new TezosProtocol();
+    // let publicKey = localStorage.getItem('pubkey');
+    // if (publicKey.startsWith('edpk') && publicKey.length === 54) {
+    //   const edpkPrefixLength = 4;
+    //   const decoded = bs58check.decode(publicKey);
+    //   publicKey = decoded
+    //     .slice(edpkPrefixLength, decoded.length)
+    //     .toString('hex');
+    // }
+    // if (!publicKey) {
+    //   console.error('NO PUBLIC KEY');
+    //   return;
+    // }
+    // tezosProtocol
+    //   .prepareOperations(publicKey, operations)
+    //   .then(async (wrappedOperations) => {
+    //     console.log('DONE');
+    //     const signedTx = await tezosProtocol.forgeAndWrapOperations(
+    //       wrappedOperations
+    //     );
+    //     tezosProtocol
+    //       .getTransactionDetails({ publicKey, transaction: signedTx })
+    //       .then((tx) => {
+    //         console.log(tx);
+    //       })
+    //       .catch((error) => console.error('error1', error));
+    //   })
+    //   .catch((error) => {
+    //     console.error('error2');
+    //     console.error(JSON.stringify(error.data));
+    //   });
   }
 }
