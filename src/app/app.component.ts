@@ -9,20 +9,31 @@ import { BeaconService } from './services/beacon.service';
 })
 export class AppComponent implements OnInit {
   address = localStorage.getItem('address') ?? '';
-  publicKey = localStorage.getItem('pubkey') ?? '';
+  publicKey =
+    localStorage.getItem('pubkey') ?? 'No public key. Please enter address';
+
+  connected: boolean | undefined;
+
+  status = '';
 
   constructor(
     public readonly api: ApiService,
     public readonly beacon: BeaconService
   ) {}
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    this.connected = await this.beacon.client.isConnected;
+  }
 
   async updateAddress() {
-    this.publicKey = await this.api.getPublicKeyForAddress(this.address);
-
-    localStorage.setItem('address', this.address);
-    localStorage.setItem('pubkey', this.publicKey);
+    this.publicKey = 'Loading...';
+    try {
+      this.publicKey = await this.api.getPublicKeyForAddress(this.address);
+      localStorage.setItem('address', this.address);
+      localStorage.setItem('pubkey', this.publicKey);
+    } catch {
+      this.publicKey = 'Invalid Address';
+    }
   }
 
   async paste() {
