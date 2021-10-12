@@ -9,7 +9,7 @@ export class ApiService {
   constructor(public readonly http: HttpClient) {}
 
   public async getPublicKeyForAddress(address: string): Promise<string> {
-    const url = `https://mainnet-tezos.giganode.io/chains/main/blocks/head/context/contracts/${address}/manager_key`;
+    const url = `https://mainnet.api.tez.ie/chains/main/blocks/head/context/contracts/${address}/manager_key`;
 
     const response = await this.http.get<string>(url).toPromise();
 

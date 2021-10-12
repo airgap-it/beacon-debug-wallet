@@ -12,7 +12,7 @@ import { Injectable } from '@angular/core';
 
 import { RpcClient, OperationContents, OpKind } from '@taquito/rpc';
 
-const client = new RpcClient('https://mainnet-tezos.giganode.io');
+const client = new RpcClient('https://mainnet.api.tez.ie');
 
 @Injectable({
   providedIn: 'root',
