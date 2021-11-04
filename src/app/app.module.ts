@@ -7,9 +7,18 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
+import { CollapsableJsonComponent } from './collapsable-json/collapsable-json.component'
+
+import { DirectivesModule } from './directives/directives.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AccountsOverviewComponent } from './components/accounts-overview/accounts-overview.component';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { CollapseModule } from 'ngx-bootstrap/collapse'
+
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  declarations: [AppComponent, CollapsableJsonComponent, AccountsOverviewComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, DirectivesModule, BrowserAnimationsModule, ModalModule.forRoot(), AccordionModule.forRoot(), CollapseModule.forRoot()],
   providers: [],
   bootstrap: [AppComponent],
 })
