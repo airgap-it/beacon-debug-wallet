@@ -1,19 +1,17 @@
 import {
-  BeaconErrorType,
-  BeaconMessageType,
-  BeaconRequestOutputMessage,
-  DAppClient,
-  LocalStorage,
   NetworkType,
-  OperationRequestOutput,
-  PartialTezosOperation,
-  PartialTezosTransactionOperation,
+  BeaconMessageType,
+  BeaconErrorType,
   PermissionRequestOutput,
   PermissionScope,
-  Serializer,
+  OperationRequestOutput,
   SignPayloadRequestOutput,
-  WalletClient,
-} from '@airgap/beacon-sdk';
+  PartialTezosOperation,
+  PartialTezosTransactionOperation,
+} from '@airgap/beacon-types';
+import { DAppClient } from '@airgap/beacon-dapp';
+import { WalletClient } from '@airgap/beacon-wallet';
+import { LocalStorage, Serializer } from '@airgap/beacon-core';
 import { Injectable } from '@angular/core';
 // import * as bs58check from 'bs58check';
 

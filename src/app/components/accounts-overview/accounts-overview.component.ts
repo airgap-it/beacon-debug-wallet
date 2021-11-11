@@ -1,4 +1,4 @@
-import { NetworkType } from '@airgap/beacon-sdk';
+import { NetworkType } from '@airgap/beacon-types';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';

@@ -1,6 +1,6 @@
-import { NetworkType } from '@airgap/beacon-sdk';
+import { NetworkType } from '@airgap/beacon-types';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { StorageService } from './storage.service';
 
 export enum AccountType {

@@ -1,4 +1,4 @@
-import { NetworkType, PeerInfo, PermissionInfo } from '@airgap/beacon-sdk';
+import { PeerInfo, PermissionInfo } from '@airgap/beacon-types';
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
