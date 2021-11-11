@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Accounts Overview</h4>
+  <h4 class="modal-title pull-left">Add Account</h4>
   <button
     type="button"
     class="btn-close close pull-right"
@@ -10,36 +10,54 @@
   </button>
 </div>
 <div class="modal-body">
-  <h3>Accounts</h3>
-  <div *ngFor="let account of accounts$ | async">
-    {{ account.address }}
-    <span class="badge badge-light ml-2">{{ account.type }}</span
-    ><button
+  <p class="pb-4">
+    Select one of the following options to add a new account to the Beacon Debug
+    Wallet.
+  </p>
+
+  <div>
+    <h5>Watch-Only Wallet</h5>
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="tz1.."
+        aria-label="tz1.."
+        [(ngModel)]="address"
+      />
+    </div>
+
+    <button
       type="button"
       class="btn btn-primary"
-      (click)="removeAccount(account)"
+      (click)="addWatchOnlyWallet()"
     >
-      Remove
+      Add Watch Only Wallet
     </button>
   </div>
-  <h3>Add Accounts</h3>
-  Beacon Wallet
-  <button type="button" class="btn btn-primary" (click)="addBeaconWallet()">
-    Pair
-  </button>
-  <hr />
-  Watch Only Wallet
-  <input type="text" [(ngModel)]="address" />
-  <br />
-  <button type="button" class="btn btn-primary" (click)="addWatchOnlyWallet()">
-    Add Watch Only Wallet
-  </button>
+</div>
 
-  <hr />
-  Mnemonic
-  <button type="button" class="btn btn-primary" (click)="addMnemonic()">
-    Add Mnemonic
-  </button>
+<hr />
+<div class="modal-body">
+  <div>
+    <h5>Beacon Compatible Wallet</h5>
+    <button type="button" class="btn btn-primary" (click)="addBeaconWallet()">
+      Connect Wallet
+    </button>
+  </div>
+</div>
+<hr />
+<div class="modal-body">
+  <div>
+    <h5>Mnemonic</h5>
+    <div class="input-group mb-3">
+      <textarea class="form-control" aria-label="Mnemonic"></textarea>
+    </div>
+
+    <button type="button" class="btn btn-primary" (click)="addMnemonic()">
+      Add Mnemonic
+    </button>
+  </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">

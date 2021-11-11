@@ -1,5 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* custom colors */
+$theme-colors: (
+  "primary": #3880ff,
+);
+
+$card-border-color: #ececec;
+
+.card {
+  box-shadow: 0 16px 8px 0 rgb(0 0 0 / 4%);
+}
+
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
 
