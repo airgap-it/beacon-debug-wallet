@@ -8,6 +8,7 @@ import {
   SignPayloadRequestOutput,
   PartialTezosOperation,
   PartialTezosTransactionOperation,
+  OperationResponseInput,
 } from '@airgap/beacon-types';
 import { DAppClient } from '@airgap/beacon-dapp';
 import { WalletClient } from '@airgap/beacon-wallet';
@@ -193,10 +194,25 @@ export class BeaconService {
             })
             .then((res) => {
               console.log('res', res);
-              // this.walletClient.respond();
+
+              const response: OperationResponseInput = {
+                id: message.id,
+                type: BeaconMessageType.OperationResponse,
+                transactionHash: res.transactionHash,
+              };
+
+              this.walletClient.respond(response);
             })
             .catch((err) => {
               console.log('BEACON WALLET ERROR', err);
+
+              const response = {
+                type: BeaconMessageType.Error,
+                id: message.id,
+                errorType: BeaconErrorType.ABORTED_ERROR,
+              };
+
+              this.walletClient.respond(response as any);
             });
         } else {
           console.log('ACCOUNT TYPE NOT BEACON');

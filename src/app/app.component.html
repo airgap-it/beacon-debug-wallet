@@ -51,39 +51,6 @@
     <div class="col-12 col-md-6">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">Messages</h3>
-          <p class="text-muted" *ngIf="beacon.log.length === 0">
-            No messages so far...
-          </p>
-          <accordion [isAnimated]="true">
-            <accordion-group *ngFor="let item of beacon.log">
-              <button
-                class="
-                  btn btn-link btn-block
-                  justify-content-between
-                  d-flex
-                  w-100
-                  shadow-none
-                "
-                accordion-heading
-                type="button"
-              >
-                <div>{{ item[1] }}</div>
-                <span class="badge badge-secondary bg-secondary">{{
-                  item[0] | date: "YYYY-MM-dd HH:mm"
-                }}</span>
-              </button>
-              <json-formatter [json]="item[2]"></json-formatter>
-            </accordion-group>
-          </accordion>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
           <h3 class="card-title">Peers & Permissions</h3>
           <p class="text-muted" *ngIf="peersAndPermissions.length === 0">
             No Peers
@@ -91,7 +58,7 @@
           <div *ngFor="let peer of peersAndPermissions">
             <div class="pb-3">
               <div class="d-flex justify-content-between pb-3">
-                <h3>Peer</h3>
+                <h3>Peer "{{ peer[0].name }}"</h3>
 
                 <button
                   type="button"
@@ -123,6 +90,39 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Messages</h3>
+          <p class="text-muted" *ngIf="beacon.log.length === 0">
+            No messages so far...
+          </p>
+          <accordion [isAnimated]="true">
+            <accordion-group *ngFor="let item of beacon.log">
+              <button
+                class="
+                  btn btn-link btn-block
+                  justify-content-between
+                  d-flex
+                  w-100
+                  shadow-none
+                "
+                accordion-heading
+                type="button"
+              >
+                <div>{{ item[1] }}</div>
+                <span class="badge badge-secondary bg-secondary">{{
+                  item[0] | date: "YYYY-MM-dd HH:mm"
+                }}</span>
+              </button>
+              <json-formatter [json]="item[2]"></json-formatter>
+            </accordion-group>
+          </accordion>
         </div>
       </div>
     </div>
