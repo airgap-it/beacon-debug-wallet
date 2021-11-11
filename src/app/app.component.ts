@@ -17,8 +17,6 @@ export class AppComponent implements OnInit {
 
   connected: boolean | undefined;
 
-  status = '';
-
   accounts$: Observable<Account[]>;
 
   peersAndPermissions: [PeerInfo, PermissionInfo[]][] = [];

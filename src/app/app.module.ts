@@ -14,10 +14,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccountsOverviewComponent } from './components/accounts-overview/accounts-overview.component';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { CollapseModule } from 'ngx-bootstrap/collapse'
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { HeaderItemComponent } from './header-item/header-item.component'
 
 @NgModule({
-  declarations: [AppComponent, CollapsableJsonComponent, AccountsOverviewComponent],
+  declarations: [AppComponent, CollapsableJsonComponent, AccountsOverviewComponent, HeaderItemComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, DirectivesModule, BrowserAnimationsModule, ModalModule.forRoot(), AccordionModule.forRoot(), CollapseModule.forRoot()],
   providers: [],
   bootstrap: [AppComponent],
