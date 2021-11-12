@@ -5,10 +5,21 @@ $theme-colors: (
   "primary": #3880ff,
 );
 
-$card-border-color: #ececec;
+$card-border-color: #fafafa;
+$card-spacer-y: 1.5rem;
+$card-cap-bg: #fff;
+$link-hover-decoration: none;
 
 .card {
-  box-shadow: 0 16px 8px 0 rgb(0 0 0 / 4%);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.panel {
+  box-shadow: none;
+}
+
+.fa-icon {
+  width: 1rem;
+  height: auto;
 }
 
 /* Importing Bootstrap SCSS file. */
