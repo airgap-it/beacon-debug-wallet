@@ -15,10 +15,12 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccountsOverviewComponent } from './components/accounts-overview/accounts-overview.component';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { HeaderItemComponent } from './header-item/header-item.component'
+import { HeaderItemComponent } from './header-item/header-item.component';
+import { NodeSelectorModalComponent } from './components/node-selector-modal/node-selector-modal.component';
+import { HowToModalComponent } from './components/how-to-modal/how-to-modal.component'
 
 @NgModule({
-  declarations: [AppComponent, CollapsableJsonComponent, AccountsOverviewComponent, HeaderItemComponent],
+  declarations: [AppComponent, CollapsableJsonComponent, AccountsOverviewComponent, HeaderItemComponent, NodeSelectorModalComponent, HowToModalComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, DirectivesModule, BrowserAnimationsModule, ModalModule.forRoot(), AccordionModule.forRoot(), CollapseModule.forRoot()],
   providers: [],
   bootstrap: [AppComponent],

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { AccountsOverviewComponent } from './components/accounts-overview/accounts-overview.component';
+import { HowToModalComponent } from './components/how-to-modal/how-to-modal.component';
+import { NodeSelectorModalComponent } from './components/node-selector-modal/node-selector-modal.component';
 import { Account, AccountService } from './services/account.service';
 import { ApiService } from './services/api.service';
 import { BeaconService } from './services/beacon.service';
@@ -72,6 +74,28 @@ export class AppComponent implements OnInit {
     };
     const bsModalRef = this.modalService.show(
       AccountsOverviewComponent,
+      initialState
+    );
+    (bsModalRef.content as any).closeBtnName = 'Close';
+  }
+
+  openNodeSelectorModal() {
+    const initialState: ModalOptions = {
+      initialState: {},
+    };
+    const bsModalRef = this.modalService.show(
+      NodeSelectorModalComponent,
+      initialState
+    );
+    (bsModalRef.content as any).closeBtnName = 'Close';
+  }
+
+  openHowToModal() {
+    const initialState: ModalOptions = {
+      initialState: {},
+    };
+    const bsModalRef = this.modalService.show(
+      HowToModalComponent,
       initialState
     );
     (bsModalRef.content as any).closeBtnName = 'Close';

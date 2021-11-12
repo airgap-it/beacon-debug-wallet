@@ -1,7 +1,7 @@
 <!-- Toolbar -->
 <app-header-item></app-header-item>
 
-<div class="container-fluid">
+<div class="container-fluid px-md-5">
   <h5 class="pb-5">
     Beacon Debug Wallet is a wallet for developers to debug
     <a href="https://walletbeacon.io">Beacon</a> enabled dApps.
@@ -13,12 +13,28 @@
           <h3 class="card-title">Connect dApp</h3>
           <button
             type="button"
-            class="btn btn-primary"
+            class="
+              btn btn-primary btn-block
+              d-flex
+              justify-content-between
+              mb-5
+            "
             [disabled]="(accounts$ | async)?.length === 0"
             (click)="paste()"
           >
-            Paste Beacon Connect Code (connect to new dApp)
+            Connect To A New dApp
+            <img src="/assets/icons/clipboard-regular.svg" class="fa-icon" />
           </button>
+          <div class="d-flex justify-content-between align-items-center">
+            <h6>How To Connect To A New dApp</h6>
+            <button
+              type="button"
+              class="btn btn-light"
+              (click)="openHowToModal()"
+            >
+              Learn More
+            </button>
+          </div>
         </div>
       </div>
       <div class="card">
@@ -31,7 +47,13 @@
               </p>
               <h6>beacon-node-2.sky.papers.tech</h6>
             </div>
-            <button type="button" class="btn btn-light">Change</button>
+            <button
+              type="button"
+              class="btn btn-light"
+              (click)="openNodeSelectorModal()"
+            >
+              Change
+            </button>
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <div>
@@ -40,7 +62,13 @@
               </p>
               <h6>beacon-node-2.sky.papers.tech</h6>
             </div>
-            <button type="button" class="btn btn-light">Change</button>
+            <button
+              type="button"
+              class="btn btn-light"
+              (click)="openNodeSelectorModal()"
+            >
+              Change
+            </button>
           </div>
         </div>
       </div>
@@ -50,13 +78,18 @@
       <div class="card">
         <div class="card-body">
           <h3 class="card-title">Accounts</h3>
+          <p class="text-muted" *ngIf="peersAndPermissions.length === 0">
+            No Accounts, Add An Account First
+          </p>
           <div
             class="d-flex justify-content-between align-items-center"
             *ngFor="let account of accounts$ | async"
           >
             <div>
-              <span class="text-monospace">{{ account.address }}</span>
-              <span class="badge badge-primary ml-2">{{ account.type }}</span>
+              <span class="text-monospace m-0 text-break">{{
+                account.address
+              }}</span>
+              <span class="badge badge-light ml-md-2">{{ account.type }}</span>
             </div>
             <button type="button" class="btn btn-light">
               <img src="/assets/icons/trash-can-regular.svg" class="fa-icon" />

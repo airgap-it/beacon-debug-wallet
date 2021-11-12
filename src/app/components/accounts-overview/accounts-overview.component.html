@@ -16,7 +16,7 @@
   </p>
 
   <div>
-    <h5>Watch-Only Wallet</h5>
+    <h6>Watch-Only Wallet</h6>
     <div class="input-group mb-3">
       <input
         type="text"
@@ -40,7 +40,7 @@
 <hr />
 <div class="modal-body">
   <div>
-    <h5>Beacon Compatible Wallet</h5>
+    <h6>Beacon Compatible Wallet</h6>
     <button type="button" class="btn btn-primary" (click)="addBeaconWallet()">
       Connect Wallet
     </button>
@@ -49,9 +49,13 @@
 <hr />
 <div class="modal-body">
   <div>
-    <h5>Mnemonic</h5>
+    <h6>Mnemonic</h6>
     <div class="input-group mb-3">
-      <textarea class="form-control" aria-label="Mnemonic"></textarea>
+      <textarea
+        class="form-control"
+        aria-label="Mnemonic"
+        placeholder="ugly opera ..."
+      ></textarea>
     </div>
 
     <button type="button" class="btn btn-primary" (click)="addMnemonic()">
