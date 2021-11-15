@@ -35,10 +35,6 @@ export class AccountsOverviewComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  async removeAccount(account: Account) {
-    this.accountService.removeAccount(account);
-  }
-
   async addBeaconWallet() {
     const permissions = await this.beacon.dAppClient.requestPermissions({
       network: {
@@ -71,5 +67,6 @@ export class AccountsOverviewComponent implements OnInit {
       network: NetworkType.MAINNET, // TODO: Remove?
     });
   }
+
   async addMnemonic() {}
 }

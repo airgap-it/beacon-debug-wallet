@@ -68,6 +68,10 @@ export class AppComponent implements OnInit {
     this.getPeers();
   }
 
+  async removeAccount(account: Account) {
+    this.accountService.removeAccount(account);
+  }
+
   async openAccountsOverview() {
     const initialState: ModalOptions = {
       initialState: {},

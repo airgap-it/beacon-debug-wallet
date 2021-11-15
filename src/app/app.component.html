@@ -91,7 +91,11 @@
               }}</span>
               <span class="badge badge-light ml-md-2">{{ account.type }}</span>
             </div>
-            <button type="button" class="btn btn-light">
+            <button
+              (click)="removeAccount(account)"
+              type="button"
+              class="btn btn-light"
+            >
               <img src="/assets/icons/trash-can-regular.svg" class="fa-icon" />
             </button>
           </div>
@@ -109,7 +113,7 @@
     <div class="col-12 col-md-6">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">Peers & Permissions</h3>
+          <h3 class="card-title">DApp Peers & Permissions</h3>
           <p class="text-muted" *ngIf="peersAndPermissions.length === 0">
             No Peers
           </p>
@@ -125,7 +129,10 @@
                   "
                   accordion-heading
                 >
-                  <h5 class="m-0">{{ peer[0].name }}</h5>
+                  <h5 class="m-0">
+                    {{ peer[0].name }}
+                    <small>- {{ $any(peer[0])?.relayServer }}</small>
+                  </h5>
 
                   <button
                     type="button"

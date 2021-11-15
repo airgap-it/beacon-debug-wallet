@@ -16,9 +16,9 @@
   },
   "private": true,
   "dependencies": {
-    "@airgap/beacon-core": "0.0.1-beta.12",
-    "@airgap/beacon-dapp": "0.0.1-beta.12",
-    "@airgap/beacon-wallet": "0.0.1-beta.12",
+    "@airgap/beacon-core": "2.4.0-beta.2",
+    "@airgap/beacon-dapp": "2.4.0-beta.2",
+    "@airgap/beacon-wallet": "2.4.0-beta.2",
     "@angular/animations": "~12.1.0",
     "@angular/common": "~12.1.0",
     "@angular/compiler": "~12.1.0",

@@ -42,31 +42,62 @@ export class BeaconService {
       name: 'Beacon Debug Wallet',
       storage: storageDApp,
     });
+    this.logClient();
 
     this.connect();
   }
 
+  async logClient() {
+    console.log('DAPP: ---');
+    console.log('DAPP: name', this.dAppClient.name);
+    console.log('DAPP: appUrl', this.dAppClient.appUrl);
+    console.log('DAPP: iconUrl', this.dAppClient.iconUrl);
+    console.log('DAPP: beaconId', await this.dAppClient.beaconId);
+    console.log('DAPP: connectionStatus', this.dAppClient.connectionStatus);
+    console.log('DAPP: getAccounts', await this.dAppClient.getAccounts());
+    console.log('DAPP: blockExplorer', this.dAppClient.blockExplorer);
+    console.log(
+      'DAPP: getOwnAppMetadata',
+      await this.dAppClient.getOwnAppMetadata()
+    );
+    console.log('DAPP: getPeers', await this.dAppClient.getPeers());
+    console.log('DAPP: getAccounts', await this.dAppClient.getAccounts());
+    console.log('DAPP: getColorMode', await this.dAppClient.getColorMode());
+    console.log(
+      'DAPP: preferredNetwork',
+      await this.dAppClient.preferredNetwork
+    );
+    console.log('DAPP: ---');
+    console.log('DAPP: init');
+  }
+
   connect() {
     this.walletClient.init().then(async () => {
-      console.log('---');
-      console.log('name', this.walletClient.name);
-      console.log('appUrl', this.walletClient.appUrl);
-      console.log('iconUrl', this.walletClient.iconUrl);
-      console.log('beaconId', await this.walletClient.beaconId);
-      console.log('connectionStatus', this.walletClient.connectionStatus);
-      console.log('getAccounts', await this.walletClient.getAccounts());
+      console.log('WALLET ---');
+      console.log('WALLET name', this.walletClient.name);
+      console.log('WALLET appUrl', this.walletClient.appUrl);
+      console.log('WALLET iconUrl', this.walletClient.iconUrl);
+      console.log('WALLET beaconId', await this.walletClient.beaconId);
       console.log(
-        'getAppMetadataList',
+        'WALLET connectionStatus',
+        this.walletClient.connectionStatus
+      );
+      console.log('WALLET getAccounts', await this.walletClient.getAccounts());
+      console.log(
+        'WALLET getAppMetadataList',
         await this.walletClient.getAppMetadataList()
       );
       console.log(
-        'getOwnAppMetadata',
+        'WALLET getOwnAppMetadata',
         await this.walletClient.getOwnAppMetadata()
       );
-      console.log('getPeers', await this.walletClient.getPeers());
-      console.log('getPermissions', await this.walletClient.getPermissions());
-      console.log('---');
-      console.log('init');
+      console.log('WALLET getPeers', await this.walletClient.getPeers());
+      console.log(
+        'WALLET getPermissions',
+        await this.walletClient.getPermissions()
+      );
+      console.log('WALLET ---');
+      console.log('WALLET init');
       this.walletClient
         .connect(async (message) => {
           this.log.push([new Date(), 'INCOMING MESSAGE', message]);
@@ -187,7 +218,9 @@ export class BeaconService {
         console.log('RUN_OPERATION ERROR', err);
       })
       .finally(() => {
-        if (account.type === AccountType.BEACON) {
+        if (account.type === AccountType.WATCH_ONLY) {
+          // TODO: Show alert, let users decide if he wants to abort (send error) or simulate success (send random hash back)
+        } else if (account.type === AccountType.BEACON) {
           this.dAppClient
             .requestOperation({
               operationDetails: operations,
@@ -214,6 +247,8 @@ export class BeaconService {
 
               this.walletClient.respond(response as any);
             });
+        } else if (account.type === AccountType.IN_MEMORY) {
+          // TODO: Add in memory signing
         } else {
           console.log('ACCOUNT TYPE NOT BEACON');
         }
