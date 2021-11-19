@@ -36,6 +36,8 @@ export class AccountsOverviewComponent implements OnInit {
   ngOnInit(): void {}
 
   async addBeaconWallet() {
+    await this.beacon.dAppClient.clearActiveAccount();
+
     const permissions = await this.beacon.dAppClient.requestPermissions({
       network: {
         type: NetworkType.MAINNET,
