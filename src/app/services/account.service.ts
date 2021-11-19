@@ -17,6 +17,7 @@ export interface Account {
   description: string;
   tags: string[];
   network: NetworkType;
+  wallet: { name: string };
 }
 
 @Injectable({
@@ -31,11 +32,14 @@ export class AccountService {
 
   constructor(private readonly _storage: StorageService) {
     this.accounts$ = this._accounts$.asObservable();
-    const accounts = JSON.parse(localStorage.getItem('accounts') ?? '[]');
+    const accounts: Account[] = JSON.parse(
+      localStorage.getItem('accounts') ?? '[]'
+    );
+
     this._accounts$.next(accounts);
   }
 
-  addOrUpdateAccount(account: Account) {
+  async addOrUpdateAccount(account: Account) {
     const accounts = this._accounts$.value;
     if (accounts.every((acc) => acc.address !== account.address)) {
       accounts.push(account);
@@ -44,7 +48,7 @@ export class AccountService {
     this._accounts$.next(accounts);
   }
 
-  removeAccount(account: Account) {
+  async removeAccount(account: Account) {
     const accounts = this._accounts$.value.filter(
       (acc) => acc.address !== account.address
     );

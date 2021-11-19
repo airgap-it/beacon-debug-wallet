@@ -90,6 +90,9 @@
                 account.address
               }}</span>
               <span class="badge badge-light ml-md-2">{{ account.type }}</span>
+              <span *ngIf="account.wallet" class="badge badge-light ml-md-2">{{
+                account.wallet.name
+              }}</span>
             </div>
             <button
               (click)="removeAccount(account)"

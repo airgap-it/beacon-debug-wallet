@@ -44,6 +44,12 @@ export class AccountsOverviewComponent implements OnInit {
       },
     });
 
+    const peers = await this.beacon.dAppClient.getPeers();
+
+    const peer = peers.find(
+      (peer) => (peer as any).senderId === permissions.senderId
+    );
+
     this.accountService.addOrUpdateAccount({
       address: permissions.address,
       publicKey: permissions.publicKey,
@@ -51,6 +57,7 @@ export class AccountsOverviewComponent implements OnInit {
       description: '',
       tags: [],
       network: NetworkType.MAINNET, // TODO: Remove?
+      wallet: { name: peer?.name ?? '' },
     });
 
     this.bsModalRef.hide();
@@ -69,6 +76,7 @@ export class AccountsOverviewComponent implements OnInit {
       description: '',
       tags: [],
       network: NetworkType.MAINNET, // TODO: Remove?
+      wallet: { name: '' },
     });
 
     this.bsModalRef.hide();
