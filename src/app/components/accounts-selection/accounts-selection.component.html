@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Modal</h4>
+  <h4 class="modal-title pull-left">Account Selection</h4>
   <button
     type="button"
     class="btn-close close pull-right"
@@ -9,4 +9,17 @@
     <span aria-hidden="true" class="visually-hidden">&times;</span>
   </button>
 </div>
-<div class="modal-body">This is a modal.</div>
+<div class="modal-body">
+  <div
+    class="d-flex justify-content-between align-items-center"
+    *ngFor="let account of accounts$ | async"
+  >
+    <div (click)="select(account)">
+      <span class="text-monospace m-0 text-break">{{ account.address }}</span>
+      <span class="badge badge-light ml-md-2">{{ account.type }}</span>
+      <span *ngIf="account.wallet" class="badge badge-light ml-md-2">{{
+        account.wallet.name
+      }}</span>
+    </div>
+  </div>
+</div>

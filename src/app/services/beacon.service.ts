@@ -20,6 +20,8 @@ import { first } from 'rxjs/operators';
 
 import { RpcClient, OperationContents, OpKind } from '@taquito/rpc';
 import { Account, AccountService, AccountType } from './account.service';
+import { AccountsSelectionComponent } from '../components/accounts-selection/accounts-selection.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +32,10 @@ export class BeaconService {
 
   log: [Date, string, any][] = [];
 
-  constructor(private readonly accountService: AccountService) {
+  constructor(
+    private readonly accountService: AccountService,
+    private readonly modalService: BsModalService
+  ) {
     const storage = new LocalStorage('INCOMING');
     this.walletClient = new WalletClient({
       name: 'Beacon Debug Wallet',
@@ -104,14 +109,44 @@ export class BeaconService {
           console.log('message', message);
 
           this.accountService.accounts$.pipe(first()).subscribe((accounts) => {
-            const account = accounts[0];
-            console.log('SELECTED ACCOUNT', account);
-
             if (message.type === BeaconMessageType.PermissionRequest) {
-              this.handlePermissionRequest(account, message);
+              if (accounts.length === 0) {
+                console.error('No account found');
+                return;
+              } else if (accounts.length === 1) {
+                this.handlePermissionRequest(accounts[0], message);
+              } else {
+                const bsModalRef = this.modalService.show(
+                  AccountsSelectionComponent,
+                  {}
+                );
+
+                bsModalRef.onHide?.pipe(first()).subscribe((result) => {
+                  if (result && (result as any).isAccount) {
+                    this.handlePermissionRequest(
+                      (result as any).account,
+                      message
+                    );
+                  }
+                });
+              }
             } else if (message.type === BeaconMessageType.OperationRequest) {
+              const account = accounts.find(
+                (acc) => acc.address === message.sourceAddress
+              );
+              if (!account) {
+                console.error('No account found for ' + message.sourceAddress);
+                return;
+              }
               this.handleOperationRequest(account, message);
             } else if (message.type === BeaconMessageType.SignPayloadRequest) {
+              const account = accounts.find(
+                (acc) => acc.address === message.sourceAddress
+              );
+              if (!account) {
+                console.error('No account found for ' + message.sourceAddress);
+                return;
+              }
               this.handleSignPayload(account, message);
             } else {
               console.error('Message type not supported');
@@ -132,11 +167,11 @@ export class BeaconService {
 
   public async addPeer(text: string) {
     const serializer = new Serializer();
-    serializer
+    return serializer
       .deserialize(text)
       .then((peer) => {
         console.log('Adding peer', peer);
-        this.walletClient.addPeer(peer as any).then(() => {
+        return this.walletClient.addPeer(peer as any).then(() => {
           console.log('Peer added');
         });
       })

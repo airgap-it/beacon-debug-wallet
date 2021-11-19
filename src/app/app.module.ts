@@ -20,6 +20,7 @@ import { NodeSelectorModalComponent } from './components/node-selector-modal/nod
 import { HowToModalComponent } from './components/how-to-modal/how-to-modal.component';
 import { AccountsSelectionComponent } from './components/accounts-selection/accounts-selection.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { LoadingModalComponent } from './components/loading-modal/loading-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     HowToModalComponent,
     AccountsSelectionComponent,
     ConfirmModalComponent,
+    LoadingModalComponent,
   ],
   imports: [
     BrowserModule,

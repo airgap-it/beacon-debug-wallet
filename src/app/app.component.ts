@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { AccountsOverviewComponent } from './components/accounts-overview/accounts-overview.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { HowToModalComponent } from './components/how-to-modal/how-to-modal.component';
+import { LoadingModalComponent } from './components/loading-modal/loading-modal.component';
 import { NodeSelectorModalComponent } from './components/node-selector-modal/node-selector-modal.component';
 import { Account, AccountService } from './services/account.service';
 import { ApiService } from './services/api.service';
@@ -40,10 +41,20 @@ export class AppComponent implements OnInit {
   }
 
   async paste() {
-    console.log('CONNECT');
-    navigator.clipboard.readText().then((clipText) => {
-      this.beacon.addPeer(clipText);
-    });
+    const bsModalRef = this.modalService.show(LoadingModalComponent, {});
+
+    setTimeout(() => {
+      navigator.clipboard
+        .readText()
+        .then(async (clipText) => {
+          try {
+            await this.beacon.addPeer(clipText);
+          } catch {}
+        })
+        .finally(() => {
+          bsModalRef.hide();
+        });
+    }, 500);
   }
 
   async getPeers() {
