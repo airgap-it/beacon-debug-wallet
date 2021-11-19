@@ -50,6 +50,8 @@ export class AccountsOverviewComponent implements OnInit {
       tags: [],
       network: NetworkType.MAINNET, // TODO: Remove?
     });
+
+    this.bsModalRef.hide();
   }
 
   async addWatchOnlyWallet() {
@@ -66,6 +68,8 @@ export class AccountsOverviewComponent implements OnInit {
       tags: [],
       network: NetworkType.MAINNET, // TODO: Remove?
     });
+
+    this.bsModalRef.hide();
   }
 
   async addMnemonic() {}
