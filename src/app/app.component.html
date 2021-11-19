@@ -78,7 +78,7 @@
       <div class="card">
         <div class="card-body">
           <h3 class="card-title">Accounts</h3>
-          <p class="text-muted" *ngIf="peersAndPermissions.length === 0">
+          <p class="text-muted" *ngIf="(accounts$ | async)?.length === 0">
             No Accounts, Add An Account First
           </p>
           <div

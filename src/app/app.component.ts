@@ -2,7 +2,9 @@ import { PeerInfo, PermissionInfo } from '@airgap/beacon-types';
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { AccountsOverviewComponent } from './components/accounts-overview/accounts-overview.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { HowToModalComponent } from './components/how-to-modal/how-to-modal.component';
 import { NodeSelectorModalComponent } from './components/node-selector-modal/node-selector-modal.component';
 import { Account, AccountService } from './services/account.service';
@@ -57,19 +59,37 @@ export class AppComponent implements OnInit {
   }
 
   async removePeer(peer: PeerInfo) {
-    await this.beacon.walletClient.removePeer(peer as any, true);
-    this.getPeers();
+    const bsModalRef = this.modalService.show(ConfirmModalComponent, {});
+
+    bsModalRef.onHide?.pipe(first()).subscribe(async (result) => {
+      if (result === 'confirm') {
+        await this.beacon.walletClient.removePeer(peer as any, true);
+        this.getPeers();
+      }
+    });
   }
 
   async removePermission(permission: PermissionInfo) {
-    await this.beacon.walletClient.removePermission(
-      permission.accountIdentifier
-    );
-    this.getPeers();
+    const bsModalRef = this.modalService.show(ConfirmModalComponent, {});
+
+    bsModalRef.onHide?.pipe(first()).subscribe(async (result) => {
+      if (result === 'confirm') {
+        await this.beacon.walletClient.removePermission(
+          permission.accountIdentifier
+        );
+        this.getPeers();
+      }
+    });
   }
 
   async removeAccount(account: Account) {
-    this.accountService.removeAccount(account);
+    const bsModalRef = this.modalService.show(ConfirmModalComponent, {});
+
+    bsModalRef.onHide?.pipe(first()).subscribe((result) => {
+      if (result === 'confirm') {
+        this.accountService.removeAccount(account);
+      }
+    });
   }
 
   async openAccountsOverview() {
