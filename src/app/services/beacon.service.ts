@@ -105,7 +105,24 @@ export class BeaconService {
       console.log('WALLET init');
       this.walletClient
         .connect(async (message) => {
-          this.log.push([new Date(), 'INCOMING MESSAGE', message]);
+          this.log.push([
+            new Date(),
+            `${message.appMetadata.name}: INCOMING MESSAGE (${message.type}) ${
+              message.type === BeaconMessageType.OperationRequest
+                ? `${
+                    message.operationDetails.length === 1
+                      ? `${
+                          (message.operationDetails[0] as any)?.amount
+                        } mutez, Entrypoint: ${
+                          (message.operationDetails[0] as any)?.parameters
+                            ?.entrypoint
+                        }`
+                      : `${message.operationDetails.length} operations`
+                  }`
+                : ''
+            }`,
+            message,
+          ]);
           console.log('message', message);
 
           this.accountService.accounts$.pipe(first()).subscribe((accounts) => {
@@ -194,7 +211,11 @@ export class BeaconService {
       publicKey: account.publicKey,
     };
 
-    this.log.push([new Date(), 'PERMISSION RESPONSE', response]);
+    this.log.push([
+      new Date(),
+      `${message.appMetadata.name}: PERMISSION RESPONSE (${account.address})`,
+      response,
+    ]);
 
     // Send response back to DApp
     this.walletClient.respond(response as any);
@@ -245,11 +266,19 @@ export class BeaconService {
         chain_id: chainId,
       })
       .then((res) => {
-        this.log.push([new Date(), 'RUN OPERATION SUCCESS', res]);
+        this.log.push([
+          new Date(),
+          `${message.appMetadata.name}: RUN OPERATION SUCCESS`,
+          res,
+        ]);
         console.log('RUN_OPERATION RESULT', res);
       })
       .catch((err) => {
-        this.log.push([new Date(), 'RUN OPERATION ERROR', err]);
+        this.log.push([
+          new Date(),
+          `${message.appMetadata.name}: RUN OPERATION ERROR`,
+          err,
+        ]);
         console.log('RUN_OPERATION ERROR', err);
       })
       .finally(() => {
@@ -269,6 +298,11 @@ export class BeaconService {
                 transactionHash: res.transactionHash,
               };
 
+              this.log.push([
+                new Date(),
+                `${message.appMetadata.name}: Relayed message back to dApp`,
+                response,
+              ]);
               this.walletClient.respond(response);
             })
             .catch((err) => {
@@ -280,6 +314,11 @@ export class BeaconService {
                 errorType: BeaconErrorType.ABORTED_ERROR,
               };
 
+              this.log.push([
+                new Date(),
+                `${message.appMetadata.name}: Relayed error back to dApp`,
+                response,
+              ]);
               this.walletClient.respond(response as any);
             });
         } else if (account.type === AccountType.IN_MEMORY) {
