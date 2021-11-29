@@ -37,10 +37,10 @@
           </div>
         </div>
       </div>
-      <!-- <div class="card">
+      <div class="card">
         <div class="card-body">
           <h3 class="card-title">Settings</h3>
-          <div class="d-flex justify-content-between align-items-center pb-3">
+          <!-- <div class="d-flex justify-content-between align-items-center pb-3">
             <div>
               <p class="text-muted mb-1">
                 <small>Connected Beacon Node</small>
@@ -54,24 +54,29 @@
             >
               Change
             </button>
-          </div>
+          </div> -->
           <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <p class="text-muted mb-1">
-                <small>Tezos Node RPC</small>
-              </p>
-              <h6>beacon-node-2.sky.papers.tech</h6>
-            </div>
             <button
               type="button"
               class="btn btn-light"
               (click)="openNodeSelectorModal()"
             >
-              Change
+              Select Node
             </button>
+            <!-- <div>
+              <p class="text-muted mb-1">
+                <small>Tezos Node RPC</small>
+              </p>
+              <h6>beacon-node-2.sky.papers.tech</h6>
+            </div> -->
           </div>
         </div>
-      </div> -->
+        <div class="d-flex justify-content-between align-items-center">
+          <button type="button" class="btn btn-light" (click)="clearStorage()">
+            Reset Debug Wallet
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="col-12 col-md-3">

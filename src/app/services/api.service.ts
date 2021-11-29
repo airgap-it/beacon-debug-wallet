@@ -2,31 +2,73 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { NetworkType } from '@airgap/beacon-types';
+import { StorageService } from './storage.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ApiService {
-  public RPCs = {
-    mainnet: [
+const defaultNodes = {
+  [NetworkType.MAINNET]: {
+    selected: 'https://mainnet.api.tez.ie',
+    all: [
       'https://mainnet.api.tez.ie',
       'https://mainnet.smartpy.io',
       'https://rpc.tzbeta.net',
       'https://teznode.letzbake.com',
       'https://mainnet-tezos.giganode.io',
     ],
-    granadanet: [
+  },
+  [NetworkType.DELPHINET]: {
+    selected: '',
+    all: [],
+  },
+  [NetworkType.EDONET]: {
+    selected: '',
+    all: [],
+  },
+  [NetworkType.FLORENCENET]: {
+    selected: '',
+    all: [],
+  },
+  [NetworkType.GRANADANET]: {
+    selected: 'https://granadanet.api.tez.ie',
+    all: [
       'https://granadanet.api.tez.ie',
       'https://granadanet.smartpy.io',
       'https://rpczero.tzbeta.net',
       'https://testnet-tezos.giganode.io/',
     ],
-    hangzhounet: ['https://hangzhounet.api.tez.ie'],
-  };
+  },
+  [NetworkType.HANGZHOUNET]: {
+    selected: 'https://hangzhounet.api.tez.ie',
+    all: ['https://hangzhounet.api.tez.ie'],
+  },
+  [NetworkType.IDIAZABALNET]: {
+    selected: '',
+    all: [],
+  },
+};
 
-  public selectedRPC = this.RPCs.mainnet[0];
+@Injectable({
+  providedIn: 'root',
+})
+export class ApiService {
+  public RPCs: {
+    [NetworkType.MAINNET]: { selected: string; all: string[] };
+    [NetworkType.DELPHINET]: { selected: string; all: string[] };
+    [NetworkType.EDONET]: { selected: string; all: string[] };
+    [NetworkType.FLORENCENET]: { selected: string; all: string[] };
+    [NetworkType.GRANADANET]: { selected: string; all: string[] };
+    [NetworkType.HANGZHOUNET]: { selected: string; all: string[] };
+    [NetworkType.IDIAZABALNET]: { selected: string; all: string[] };
+  } = defaultNodes;
 
-  constructor(public readonly http: HttpClient) {}
+  constructor(
+    public readonly http: HttpClient,
+    private readonly storage: StorageService
+  ) {
+    try {
+      const parsedNodes = JSON.parse(localStorage.getItem('nodes') ?? '');
+      this.RPCs = parsedNodes;
+    } catch {}
+  }
 
   public async getPublicKeyForAddress(
     address: string
@@ -34,13 +76,18 @@ export class ApiService {
     // Try to get the public key from any network
     const RPCs: { network: NetworkType; url: string }[] = Object.entries(
       this.RPCs
-    ).map((element) => ({
-      network: element[0] as NetworkType,
-      url: element[1][0],
-    }));
+    )
+      .filter((element) => !!element[1].selected)
+      .map((element) => ({
+        network: element[0] as NetworkType,
+        url: element[1].selected,
+      }));
 
     // First try to get the public key from the selected RPC
-    RPCs.unshift({ network: NetworkType.MAINNET, url: this.selectedRPC });
+    RPCs.unshift({
+      network: NetworkType.MAINNET,
+      url: this.RPCs.mainnet.selected,
+    });
 
     for (let rpc of RPCs) {
       const result = await this.getPublicKeyForAddressFromRPC(rpc.url, address);
@@ -63,7 +110,15 @@ export class ApiService {
     return response;
   }
 
-  public async setCustomRPC(rpc: string) {
-    this.selectedRPC = rpc;
+  public async selectRpc(network: NetworkType, rpc: string) {
+    (this.RPCs as any)[network].selected = rpc;
+
+    localStorage.setItem('nodes', JSON.stringify(this.RPCs));
+  }
+
+  public async addCustomRpc(network: NetworkType, rpc: string) {
+    (this.RPCs as any)[network].all.push(rpc);
+
+    this.selectRpc(network, rpc);
   }
 }

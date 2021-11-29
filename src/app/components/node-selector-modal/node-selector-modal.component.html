@@ -13,77 +13,52 @@
 <div class="modal-body">
   <div class="pb-3">
     <p class="text-muted mb-1">
-      <small>Select Beacon Node</small>
+      <small>Select RPC</small>
     </p>
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="exampleRadios"
-        id="exampleRadios1"
-        value="option1"
-        checked
-      />
-      <label class="form-check-label" for="exampleRadios1">
-        beacon-node-2.sky.papers.tech
-      </label>
-    </div>
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="exampleRadios"
-        id="exampleRadios1"
-        value="option1"
-        checked
-      />
-      <label class="form-check-label" for="exampleRadios1">
-        beacon-node-2.sky.papers.tech
-      </label>
-    </div>
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="exampleRadios"
-        id="exampleRadios1"
-        value="option1"
-        checked
-      />
-      <label class="form-check-label" for="exampleRadios1">
-        beacon-node-2.sky.papers.tech
-      </label>
-    </div>
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="exampleRadios"
-        id="exampleRadios1"
-        value="option1"
-        checked
-      />
-      <label class="form-check-label" for="exampleRadios1"> Custom </label>
-    </div>
+    <ng-container *ngFor="let node of nodes">
+      <p class="text-muted mb-1">
+        <small>{{ node[0] }}</small>
+      </p>
+
+      <div class="form-check" *ngFor="let rpc of node[1]">
+        <input
+          class="form-check-input"
+          type="radio"
+          [name]="node[0]"
+          [id]="node[0]"
+          [value]="rpc.url"
+          [checked]="rpc.selected"
+          (click)="selectNode($any(node[0]), rpc.url)"
+        />
+        <label class="form-check-label" [for]="node[0]">
+          {{ rpc.url }}
+        </label>
+      </div>
+    </ng-container>
   </div>
   <div>
     <p class="text-muted mb-1">
       <small>Custom Node</small>
     </p>
     <div class="input-group mb-3">
+      <select [(ngModel)]="customNodeNetwork">
+        <option *ngFor="let network of networks">{{ network }}</option>
+      </select>
       <input
+        [(ngModel)]="customNodeAddress"
         type="text"
         class="form-control"
-        placeholder="Node address"
-        aria-label="Node address"
+        placeholder="RPC URL"
+        aria-label="RPC URL"
       />
     </div>
+    <button (click)="addNode()">Add Node</button>
   </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">
-    {{ closeBtnName }}
+    Close
   </button>
   <!--TODO: save settings-->
-  <button type="button" class="btn btn-primary">Update</button>
+  <!-- <button type="button" class="btn btn-primary">Update</button> -->
 </div>

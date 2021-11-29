@@ -23,6 +23,7 @@ import { RpcClient, OperationContents, OpKind } from '@taquito/rpc';
 import { Account, AccountService, AccountType } from './account.service';
 import { AccountsSelectionComponent } from '../components/accounts-selection/accounts-selection.component';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { ApiService } from './api.service';
 
 export interface LogAction {
   title: string;
@@ -40,7 +41,8 @@ export class BeaconService {
 
   constructor(
     private readonly accountService: AccountService,
-    private readonly modalService: BsModalService
+    private readonly modalService: BsModalService,
+    private readonly apiService: ApiService
   ) {
     const storage = new LocalStorage('INCOMING');
     this.walletClient = new WalletClient({
@@ -241,9 +243,7 @@ export class BeaconService {
     const operations: PartialTezosOperation[] = message.operationDetails;
 
     const client = new RpcClient(
-      message.network.type === NetworkType.GRANADANET
-        ? 'https://granadanet.api.tez.ie'
-        : 'https://mainnet.api.tez.ie'
+      (this.apiService.RPCs as any)[message.network.type].selected
     );
 
     const { counter } = await client.getContract(account.address);
