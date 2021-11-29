@@ -41,9 +41,12 @@
       <small>Custom Node</small>
     </p>
     <div class="input-group mb-3">
-      <select [(ngModel)]="customNodeNetwork">
-        <option *ngFor="let network of networks">{{ network }}</option>
-      </select>
+      <div class="input-group-prepend">
+        <select [(ngModel)]="customNodeNetwork">
+          <option *ngFor="let network of networks">{{ network }}</option>
+        </select>
+      </div>
+
       <input
         [(ngModel)]="customNodeAddress"
         type="text"
@@ -52,7 +55,9 @@
         aria-label="RPC URL"
       />
     </div>
-    <button (click)="addNode()">Add Node</button>
+    <button type="button" class="btn btn-light" (click)="addNode()">
+      Add Node
+    </button>
   </div>
 </div>
 <div class="modal-footer">
