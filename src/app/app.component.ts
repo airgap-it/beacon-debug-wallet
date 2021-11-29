@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
 
   peersAndPermissions: [PeerInfo, PermissionInfo[]][] = [];
 
+  selectedNodes: [string, string][] = [];
+
   constructor(
     public readonly api: ApiService,
     public readonly beacon: BeaconService,
@@ -33,6 +35,13 @@ export class AppComponent implements OnInit {
     private readonly modalService: BsModalService
   ) {
     this.accounts$ = this.accountService.accounts$;
+    this.loadNodes();
+  }
+
+  loadNodes() {
+    this.selectedNodes = Object.entries(this.api.RPCs)
+      .filter((element) => element[1].all.length > 0)
+      .map((element) => [element[0], element[1].selected]);
   }
 
   async ngOnInit() {
@@ -122,7 +131,9 @@ export class AppComponent implements OnInit {
       NodeSelectorModalComponent,
       initialState
     );
-    (bsModalRef.content as any).closeBtnName = 'Close';
+    bsModalRef.onHide?.subscribe(() => {
+      this.loadNodes();
+    });
   }
 
   openHowToModal() {

@@ -55,6 +55,12 @@
               Change
             </button>
           </div> -->
+          <div *ngFor="let node of selectedNodes">
+            <p class="text-muted mb-1">
+              <small>{{ node[0] }}</small>
+            </p>
+            <h6>{{ node[1] }}</h6>
+          </div>
           <div class="d-flex justify-content-between align-items-center">
             <button
               type="button"
@@ -63,12 +69,6 @@
             >
               Select Node
             </button>
-            <!-- <div>
-              <p class="text-muted mb-1">
-                <small>Tezos Node RPC</small>
-              </p>
-              <h6>beacon-node-2.sky.papers.tech</h6>
-            </div> -->
           </div>
         </div>
       </div>
