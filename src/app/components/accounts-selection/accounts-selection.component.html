@@ -16,8 +16,9 @@
   >
     <div (click)="select(account)">
       <span class="text-monospace m-0 text-break">{{ account.address }}</span>
-      <span class="badge badge-light ml-md-2">{{ account.type }}</span>
-      <span *ngIf="account.wallet" class="badge badge-light ml-md-2">{{
+      <span class="badge badge-success ml-md-2">{{ account.type }}</span>
+      <span class="badge badge-success ml-md-2">{{ account.network }}</span>
+      <span *ngIf="account.wallet" class="badge badge-success ml-md-2">{{
         account.wallet.name
       }}</span>
     </div>

@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { Account, AccountService } from 'src/app/services/account.service';
+import { map } from 'rxjs/operators';
+import {
+  Account,
+  AccountService,
+  AccountType,
+} from 'src/app/services/account.service';
+
+import { NetworkType } from '@airgap/beacon-types';
 
 @Component({
   selector: 'app-accounts-selection',
@@ -9,15 +16,32 @@ import { Account, AccountService } from 'src/app/services/account.service';
   styleUrls: ['./accounts-selection.component.scss'],
 })
 export class AccountsSelectionComponent implements OnInit {
-  accounts$: Observable<Account[]>;
+  accounts$: Observable<Account[]> | undefined;
+
+  public network: NetworkType | undefined;
+
   constructor(
     public bsModalRef: BsModalRef,
     private readonly accountService: AccountService
-  ) {
-    this.accounts$ = this.accountService.accounts$;
-  }
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.accounts$ = this.accountService.accounts$.pipe(
+      map((accounts) => {
+        return accounts.filter((account) => {
+          if (
+            account.type === AccountType.BEACON &&
+            this.network &&
+            account.network === this.network
+          ) {
+            return false;
+          }
+
+          return true;
+        });
+      })
+    );
+  }
 
   close(): void {
     this.bsModalRef.hide();

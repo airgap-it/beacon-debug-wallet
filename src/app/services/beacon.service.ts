@@ -21,7 +21,7 @@ import { first } from 'rxjs/operators';
 import { RpcClient, OperationContents, OpKind } from '@taquito/rpc';
 import { Account, AccountService, AccountType } from './account.service';
 import { AccountsSelectionComponent } from '../components/accounts-selection/accounts-selection.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
 @Injectable({
   providedIn: 'root',
@@ -133,9 +133,14 @@ export class BeaconService {
               } else if (accounts.length === 1) {
                 this.handlePermissionRequest(accounts[0], message);
               } else {
+                const initialState: ModalOptions = {
+                  initialState: {
+                    network: message.network,
+                  },
+                };
                 const bsModalRef = this.modalService.show(
                   AccountsSelectionComponent,
-                  {}
+                  initialState
                 );
 
                 bsModalRef.onHide?.pipe(first()).subscribe((result) => {

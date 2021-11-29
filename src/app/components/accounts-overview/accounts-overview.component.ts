@@ -64,18 +64,18 @@ export class AccountsOverviewComponent implements OnInit {
   }
 
   async addWatchOnlyWallet() {
-    const publicKey = await this.api.getPublicKeyForAddress(this.address);
-    if (!publicKey) {
+    const publicKeyInfo = await this.api.getPublicKeyForAddress(this.address);
+    if (!publicKeyInfo) {
       throw new Error('NO PUBLIC KEY FOUND, PLEASE REVEAL ADDRESS');
     }
 
     this.accountService.addOrUpdateAccount({
       address: this.address,
-      publicKey: publicKey,
+      publicKey: publicKeyInfo.publicKey,
       type: AccountType.WATCH_ONLY,
       description: '',
       tags: [],
-      network: NetworkType.MAINNET, // TODO: Remove?
+      network: publicKeyInfo.network,
       wallet: { name: '' },
     });
 
