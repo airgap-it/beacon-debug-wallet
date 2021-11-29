@@ -10,7 +10,7 @@ import { LoadingModalComponent } from './components/loading-modal/loading-modal.
 import { NodeSelectorModalComponent } from './components/node-selector-modal/node-selector-modal.component';
 import { Account, AccountService } from './services/account.service';
 import { ApiService } from './services/api.service';
-import { BeaconService } from './services/beacon.service';
+import { BeaconService, LogAction } from './services/beacon.service';
 
 @Component({
   selector: 'app-root',
@@ -134,5 +134,12 @@ export class AppComponent implements OnInit {
       initialState
     );
     (bsModalRef.content as any).closeBtnName = 'Close';
+  }
+
+  action(ev: Event, logItem: any, item: LogAction) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    item.action();
+    logItem[3].length = 0;
   }
 }

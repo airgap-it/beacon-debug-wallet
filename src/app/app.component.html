@@ -206,6 +206,14 @@
                 <span class="badge badge-light">{{
                   item[0] | date: "YYYY-MM-dd HH:mm"
                 }}</span>
+                <ng-container *ngIf="item[3].length > 0">
+                  <button
+                    *ngFor="let actionItem of item[3]"
+                    (click)="action($event, item, actionItem)"
+                  >
+                    {{ actionItem.title }}
+                  </button>
+                </ng-container>
               </div>
               <json-formatter [json]="item[2]"></json-formatter>
             </accordion-group>

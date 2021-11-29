@@ -8,6 +8,7 @@ import {
   SignPayloadRequestOutput,
   PartialTezosOperation,
   PartialTezosTransactionOperation,
+  BeaconRequestOutputMessage,
   OperationResponseInput,
 } from '@airgap/beacon-types';
 import { DAppClient } from '@airgap/beacon-dapp';
@@ -23,6 +24,11 @@ import { Account, AccountService, AccountType } from './account.service';
 import { AccountsSelectionComponent } from '../components/accounts-selection/accounts-selection.component';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
+export interface LogAction {
+  title: string;
+  action: () => void;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -30,7 +36,7 @@ export class BeaconService {
   public walletClient: WalletClient;
   public dAppClient: DAppClient;
 
-  log: [Date, string, any][] = [];
+  log: [Date, string, any, LogAction[]][] = [];
 
   constructor(
     private readonly accountService: AccountService,
@@ -122,6 +128,7 @@ export class BeaconService {
                 : ''
             }`,
             message,
+            [],
           ]);
           console.log('message', message);
 
@@ -220,6 +227,7 @@ export class BeaconService {
       new Date(),
       `${message.appMetadata.name}: PERMISSION RESPONSE (${account.address})`,
       response,
+      [],
     ]);
 
     // Send response back to DApp
@@ -275,6 +283,7 @@ export class BeaconService {
           new Date(),
           `${message.appMetadata.name}: RUN OPERATION SUCCESS`,
           res,
+          this.getSimulateActionButtons(account, message),
         ]);
         console.log('RUN_OPERATION RESULT', res);
       })
@@ -283,6 +292,7 @@ export class BeaconService {
           new Date(),
           `${message.appMetadata.name}: RUN OPERATION ERROR`,
           err,
+          this.getSimulateActionButtons(account, message, err),
         ]);
         console.log('RUN_OPERATION ERROR', err);
       })
@@ -307,6 +317,7 @@ export class BeaconService {
                 new Date(),
                 `${message.appMetadata.name}: Relayed message back to dApp`,
                 response,
+                [],
               ]);
               this.walletClient.respond(response);
             })
@@ -323,6 +334,7 @@ export class BeaconService {
                 new Date(),
                 `${message.appMetadata.name}: Relayed error back to dApp`,
                 response,
+                [],
               ]);
               this.walletClient.respond(response as any);
             });
@@ -349,5 +361,54 @@ export class BeaconService {
     // };
     // // Send response back to DApp
     // this.walletClient.respond(response as any);
+  }
+
+  private getSimulateActionButtons(
+    account: Account,
+    message: BeaconRequestOutputMessage,
+    error?: any
+  ) {
+    if (account.type === AccountType.WATCH_ONLY) {
+      return [
+        {
+          title: 'Send back success',
+          action: () => {
+            this.walletClient.respond({
+              type: BeaconMessageType.OperationResponse,
+              id: message.id,
+              transactionHash: 'example-hash',
+            });
+          },
+        },
+        {
+          title: 'Send back error',
+          action: () => {
+            const tryFormatError = () => {
+              try {
+                return JSON.parse(error.body);
+              } catch {
+                return error;
+              }
+            };
+            const response = error
+              ? {
+                  type: BeaconMessageType.Error,
+                  id: message.id,
+                  errorType: BeaconErrorType.TRANSACTION_INVALID_ERROR,
+                  errorData: tryFormatError(),
+                }
+              : {
+                  type: BeaconMessageType.Error,
+                  id: message.id,
+                  errorType: BeaconErrorType.ABORTED_ERROR,
+                };
+
+            this.walletClient.respond(response as any);
+          },
+        },
+      ];
+    } else {
+      return [];
+    }
   }
 }
