@@ -100,8 +100,9 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "baseHref": "/beacon-debug-wallet/",
-            "message": "Deploying latest changes"
+            "baseHref": "/",
+            "message": "Deploying latest changes",
+            "cname": "debug.walletbeacon.io"
           }
         }
       }
