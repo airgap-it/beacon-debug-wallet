@@ -142,15 +142,4 @@ export class AppComponent implements OnInit {
     item.action();
     logItem[3].length = 0;
   }
-
-  clearStorage() {
-    const bsModalRef = this.modalService.show(ConfirmModalComponent, {});
-
-    bsModalRef.onHide?.pipe(first()).subscribe((result) => {
-      if (result === 'confirm') {
-        localStorage.clear();
-        window.location.reload();
-      }
-    });
-  }
 }
