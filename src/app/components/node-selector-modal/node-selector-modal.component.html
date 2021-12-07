@@ -1,6 +1,5 @@
 <div class="modal-header">
-  <!--TODO: rpc/beacon node-->
-  <h4 class="modal-title pull-left">Beacon Node Selection</h4>
+  <h4 class="modal-title pull-left">Tezos RPC Node Selection</h4>
   <button
     type="button"
     class="btn-close close pull-right"
@@ -13,7 +12,7 @@
 <div class="modal-body">
   <div class="pb-3">
     <p class="text-muted mb-1">
-      <small>Select RPC</small>
+      <small>Select Tezos RPC Node</small>
     </p>
     <ng-container *ngFor="let node of nodes">
       <p class="text-muted mb-1">
@@ -38,7 +37,7 @@
   </div>
   <div>
     <p class="text-muted mb-1">
-      <small>Custom Node</small>
+      <small>Custom Tezos RPC Node</small>
     </p>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
@@ -64,6 +63,4 @@
   <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">
     Close
   </button>
-  <!--TODO: save settings-->
-  <!-- <button type="button" class="btn btn-primary">Update</button> -->
 </div>
