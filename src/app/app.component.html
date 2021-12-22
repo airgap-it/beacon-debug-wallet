@@ -199,17 +199,22 @@
                 accordion-heading
               >
                 <strong>{{ item[1] | titlecase }}</strong>
-                <span class="badge badge-light">{{
-                  item[0] | date: "YYYY-MM-dd HH:mm"
-                }}</span>
-                <ng-container *ngIf="item[3].length > 0">
-                  <button
-                    *ngFor="let actionItem of item[3]"
-                    (click)="action($event, item, actionItem)"
-                  >
-                    {{ actionItem.title }}
-                  </button>
-                </ng-container>
+
+                <div>
+                  <ng-container *ngIf="item[3].length > 0">
+                    <button
+                      type="button"
+                      class="btn btn-outline-primary mx-1"
+                      *ngFor="let actionItem of item[3]"
+                      (click)="action($event, item, actionItem)"
+                    >
+                      {{ actionItem.title }}
+                    </button>
+                  </ng-container>
+                  <span class="badge badge-light ml-3">{{
+                    item[0] | date: "YYYY-MM-dd HH:mm"
+                  }}</span>
+                </div>
               </div>
               <json-formatter [json]="item[2]"></json-formatter>
             </accordion-group>
