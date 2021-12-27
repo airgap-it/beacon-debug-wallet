@@ -248,7 +248,7 @@ export class BeaconService {
 
     const { counter } = await client.getContract(account.address);
     console.log('COUNTER FROM API', counter);
-    const nextCounter = parseInt(counter || '0', 10) + 1;
+    let nextCounter = parseInt(counter || '0', 10) + 1;
     console.log('nextCounter', nextCounter);
     const branch = (await client.getBlockHeader()).hash;
     // RPC requires a signature but does not verify it
@@ -260,7 +260,7 @@ export class BeaconService {
       (op) =>
         ({
           source: account.address,
-          counter: String(nextCounter),
+          counter: String(nextCounter++),
           fee: '10000',
           gas_limit: '1040000',
           storage_limit: '60000',
