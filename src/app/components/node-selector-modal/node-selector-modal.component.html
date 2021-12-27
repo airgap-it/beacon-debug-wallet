@@ -1,6 +1,5 @@
 <div class="modal-header">
-  <!--TODO: rpc/beacon node-->
-  <h4 class="modal-title pull-left">Beacon Node Selection</h4>
+  <h4 class="modal-title pull-left">Tezos RPC Node Selection</h4>
   <button
     type="button"
     class="btn-close close pull-right"
@@ -13,37 +12,42 @@
 <div class="modal-body">
   <div class="pb-3">
     <p class="text-muted mb-1">
-      <small>Select RPC</small>
+      <small>Select Tezos RPC Node</small>
     </p>
     <ng-container *ngFor="let node of nodes">
-      <p class="text-muted mb-1">
-        <small>{{ node[0] }}</small>
-      </p>
+      <div class="pb-3">
+        <p class="text-muted mb-1">
+          <small>{{ node[0] }}</small>
+        </p>
 
-      <div class="form-check" *ngFor="let rpc of node[1]">
-        <input
-          class="form-check-input"
-          type="radio"
-          [name]="node[0]"
-          [id]="node[0]"
-          [value]="rpc.url"
-          [checked]="rpc.selected"
-          (click)="selectNode($any(node[0]), rpc.url)"
-        />
-        <label class="form-check-label" [for]="node[0]">
-          {{ rpc.url }}
-        </label>
+        <div class="form-check" *ngFor="let rpc of node[1]">
+          <input
+            class="form-check-input"
+            type="radio"
+            [name]="node[0]"
+            [id]="node[0]"
+            [value]="rpc.url"
+            [checked]="rpc.selected"
+            (click)="selectNode($any(node[0]), rpc.url)"
+          />
+          <label class="form-check-label" [for]="node[0]">
+            {{ rpc.url }}
+          </label>
+        </div>
       </div>
     </ng-container>
   </div>
   <div>
     <p class="text-muted mb-1">
-      <small>Custom Node</small>
+      <small>Custom Tezos RPC Node</small>
     </p>
     <div class="input-group mb-3">
-      <select [(ngModel)]="customNodeNetwork">
-        <option *ngFor="let network of networks">{{ network }}</option>
-      </select>
+      <div class="input-group-prepend">
+        <select class="custom-select" [(ngModel)]="customNodeNetwork">
+          <option *ngFor="let network of networks">{{ network }}</option>
+        </select>
+      </div>
+
       <input
         [(ngModel)]="customNodeAddress"
         type="text"
@@ -52,13 +56,13 @@
         aria-label="RPC URL"
       />
     </div>
-    <button (click)="addNode()">Add Node</button>
+    <button type="button" class="btn btn-light" (click)="addNode()">
+      Add Custom Node
+    </button>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">
-    Close
+  <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
+    Save
   </button>
-  <!--TODO: save settings-->
-  <!-- <button type="button" class="btn btn-primary">Update</button> -->
 </div>

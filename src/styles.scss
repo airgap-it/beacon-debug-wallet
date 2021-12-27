@@ -22,6 +22,11 @@ $link-hover-decoration: none;
   height: auto;
 }
 
+.custom-select {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
 

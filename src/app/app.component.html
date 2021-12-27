@@ -3,7 +3,7 @@
 
 <div class="container-fluid px-md-5 pb-3">
   <h5 class="pb-5">
-    Beacon Debug Wallet is a wallet for developers to debug
+    Beacon Debug Wallet is a watch-only wallet for developers to debug
     <a href="https://walletbeacon.io">Beacon</a> enabled dApps.
   </h5>
   <div class="row pb-4">
@@ -56,12 +56,12 @@
             </button>
           </div> -->
           <div *ngFor="let node of selectedNodes">
-            <p class="text-muted mb-1">
+            <p class="text-muted mb-0">
               <small>{{ node[0] }}</small>
             </p>
             <h6>{{ node[1] }}</h6>
           </div>
-          <div class="d-flex justify-content-between align-items-center">
+          <div class="mt-5">
             <button
               type="button"
               class="btn btn-light"
@@ -82,24 +82,20 @@
             No Accounts, Add An Account First
           </p>
           <div
-            class="d-flex justify-content-between align-items-center"
+            class="d-flex justify-content-between align-items-center pb-3"
             *ngFor="let account of accounts$ | async"
           >
             <div>
-              <span class="text-monospace m-0 text-break">{{
+              <span class="text-monospace m-0 text-break d-block mr-3">{{
                 account.address
               }}</span>
-              <span class="badge badge-success ml-md-2">{{
-                account.type
-              }}</span>
-              <span class="badge badge-success ml-md-2">{{
+              <span class="badge badge-primary">{{ account.type }}</span>
+              <span class="badge badge-light ml-md-2">{{
                 account.network
               }}</span>
-              <span
-                *ngIf="account.wallet"
-                class="badge badge-success ml-md-2"
-                >{{ account.wallet.name }}</span
-              >
+              <span *ngIf="account.wallet" class="badge badge-light ml-md-2">{{
+                account.wallet.name
+              }}</span>
             </div>
             <button
               (click)="removeAccount(account)"
@@ -203,17 +199,22 @@
                 accordion-heading
               >
                 <strong>{{ item[1] | titlecase }}</strong>
-                <span class="badge badge-light">{{
-                  item[0] | date: "YYYY-MM-dd HH:mm"
-                }}</span>
-                <ng-container *ngIf="item[3].length > 0">
-                  <button
-                    *ngFor="let actionItem of item[3]"
-                    (click)="action($event, item, actionItem)"
-                  >
-                    {{ actionItem.title }}
-                  </button>
-                </ng-container>
+
+                <div>
+                  <ng-container *ngIf="item[3].length > 0">
+                    <button
+                      type="button"
+                      class="btn btn-outline-primary mx-1"
+                      *ngFor="let actionItem of item[3]"
+                      (click)="action($event, item, actionItem)"
+                    >
+                      {{ actionItem.title }}
+                    </button>
+                  </ng-container>
+                  <span class="badge badge-light ml-3">{{
+                    item[0] | date: "YYYY-MM-dd HH:mm"
+                  }}</span>
+                </div>
               </div>
               <json-formatter [json]="item[2]"></json-formatter>
             </accordion-group>

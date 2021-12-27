@@ -371,7 +371,7 @@ export class BeaconService {
     if (account.type === AccountType.WATCH_ONLY) {
       return [
         {
-          title: 'Send back success',
+          title: 'Send Back Success',
           action: () => {
             this.walletClient.respond({
               type: BeaconMessageType.OperationResponse,
@@ -381,7 +381,7 @@ export class BeaconService {
           },
         },
         {
-          title: 'Send back error',
+          title: 'Send Back Error',
           action: () => {
             const tryFormatError = () => {
               try {
