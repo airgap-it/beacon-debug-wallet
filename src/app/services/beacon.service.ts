@@ -10,6 +10,7 @@ import {
   PartialTezosTransactionOperation,
   BeaconRequestOutputMessage,
   OperationResponseInput,
+  SignPayloadResponseInput,
 } from '@airgap/beacon-types';
 import { DAppClient } from '@airgap/beacon-dapp';
 import { WalletClient } from '@airgap/beacon-wallet';
@@ -220,7 +221,7 @@ export class BeaconService {
     const response = {
       type: BeaconMessageType.PermissionResponse,
       network: message.network,
-      scopes: [PermissionScope.OPERATION_REQUEST],
+      scopes: [PermissionScope.OPERATION_REQUEST, PermissionScope.SIGN],
       id: message.id,
       publicKey: account.publicKey,
     };
@@ -350,17 +351,55 @@ export class BeaconService {
     account: Account,
     message: SignPayloadRequestOutput
   ) {
-    // const publicKey = localStorage.getItem('pubkey');
-    // console.log('Sharing ', publicKey);
-    // const response = {
-    //   type: BeaconMessageType.SignPayloadResponse,
-    //   network: message.network,
-    //   scopes: [PermissionScope.OPERATION_REQUEST],
-    //   id: message.id,
-    //   publicKey,
-    // };
-    // // Send response back to DApp
-    // this.walletClient.respond(response as any);
+    if (account.type === AccountType.WATCH_ONLY) {
+      // TODO
+    } else if (account.type === AccountType.BEACON) {
+      this.dAppClient
+        .requestSignPayload({
+          signingType: message.signingType,
+          payload: message.payload,
+          sourceAddress: message.sourceAddress,
+        })
+        .then((res) => {
+          console.log('res', res);
+
+          const response: SignPayloadResponseInput = {
+            id: message.id,
+            type: BeaconMessageType.SignPayloadResponse,
+            signature: res.signature,
+            signingType: res.signingType,
+          };
+
+          this.log.push([
+            new Date(),
+            `${message.appMetadata.name}: Relayed message back to dApp`,
+            response,
+            [],
+          ]);
+          this.walletClient.respond(response);
+        })
+        .catch((err) => {
+          console.log('BEACON WALLET ERROR', err);
+
+          const response = {
+            type: BeaconMessageType.Error,
+            id: message.id,
+            errorType: BeaconErrorType.ABORTED_ERROR,
+          };
+
+          this.log.push([
+            new Date(),
+            `${message.appMetadata.name}: Relayed error back to dApp`,
+            response,
+            [],
+          ]);
+          this.walletClient.respond(response as any);
+        });
+    } else if (account.type === AccountType.IN_MEMORY) {
+      // TODO: Add in memory signing
+    } else {
+      console.log('ACCOUNT TYPE NOT BEACON');
+    }
   }
 
   private getSimulateActionButtons(
