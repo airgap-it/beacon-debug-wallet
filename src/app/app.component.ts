@@ -20,6 +20,8 @@ import { BeaconService, LogAction } from './services/beacon.service';
 export class AppComponent implements OnInit {
   isCollapsed = true;
 
+  syncCode: string = '';
+
   connected: boolean | undefined;
 
   accounts$: Observable<Account[]>;
@@ -50,19 +52,17 @@ export class AppComponent implements OnInit {
   }
 
   async paste() {
+    navigator.clipboard.readText().then(async (clipText) => {
+      try {
+        this.syncCode = clipText;
+      } catch {}
+    });
+  }
+  async connect() {
     const bsModalRef = this.modalService.show(LoadingModalComponent, {});
 
     setTimeout(() => {
-      navigator.clipboard
-        .readText()
-        .then(async (clipText) => {
-          try {
-            await this.beacon.addPeer(clipText);
-          } catch {}
-        })
-        .finally(() => {
-          bsModalRef.hide();
-        });
+      this.beacon.addPeer(this.syncCode).finally(() => bsModalRef.hide());
     }, 500);
   }
 

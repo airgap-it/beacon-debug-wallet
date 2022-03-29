@@ -11,16 +11,21 @@
       <div class="card mb-3">
         <div class="card-body">
           <h3 class="card-title">Connect dApp</h3>
+          <input type="text" class="form-control" [(ngModel)]="syncCode" />
           <button
             type="button"
-            class="
-              btn btn-primary btn-block
-              d-flex
-              justify-content-between
-              mb-5
-            "
-            [disabled]="(accounts$ | async)?.length === 0"
+            class="btn btn-primary btn-block d-flex justify-content-between"
             (click)="paste()"
+          >
+            Paste
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary btn-block d-flex justify-content-between mb-5"
+            [disabled]="
+              (accounts$ | async)?.length === 0 || syncCode.length === 0
+            "
+            (click)="connect()"
           >
             Connect To A New dApp
             <img src="./assets/icons/clipboard-regular.svg" class="fa-icon" />
@@ -127,12 +132,7 @@
             <accordion [isAnimated]="true">
               <accordion-group *ngFor="let peer of peersAndPermissions">
                 <div
-                  class="
-                    justify-content-between
-                    align-items-center
-                    d-flex
-                    w-100
-                  "
+                  class="justify-content-between align-items-center d-flex w-100"
                   accordion-heading
                 >
                   <h5 class="m-0">
@@ -159,12 +159,7 @@
                       <json-formatter [json]="permission"></json-formatter>
                     </div>
                     <div
-                      class="
-                        col-12 col-md-3
-                        d-flex
-                        justify-content-end
-                        align-items-start
-                      "
+                      class="col-12 col-md-3 d-flex justify-content-end align-items-start"
                     >
                       <button
                         type="button"
